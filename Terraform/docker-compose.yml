@@ -1,0 +1,62 @@
+version: '3.7'
+services:
+#  db:
+#    image: mysql:latest
+#    ports:
+#      - "8855:3306"
+#    restart: always
+#    environment:
+#      MYSQL_DATABASE: my_resto
+#      MYSQL_USER: myresto
+#      MYSQL_PASSWORD: myresto
+#      MYSQL_ROOT_PASSWORD: myresto
+#    volumes:
+#      - ./db-data:/var/lib/mysql
+#    networks:
+#      - spring-boot-network
+  msConfig:
+    container_name: msConfig
+    image: flav1ann/msconfig:lastest
+    ports:
+      - 8888:8888
+    networks:
+      - spring-boot-network
+  msCompte:
+    container_name: msCompte
+    image: flav1ann/mscompte:lastest
+    depends_on:
+      - msConfig
+      - msGateway
+      - msRegistery
+    ports:
+      - 8083:8083
+    restart: always
+    networks:
+      - spring-boot-network
+
+  msGateway:
+    container_name: msGateway
+    image: flav1ann/msgateway:lastest
+    depends_on:
+      - msConfig
+    ports:
+      - 8099:8099
+    networks:
+      - spring-boot-network
+
+  msRegistery:
+    container_name: msRegistery
+    image: flav1ann/msregistery:lastest
+    depends_on:
+      - msConfig
+    ports:
+      - 8761:8761
+    networks:
+      - spring-boot-network
+
+
+
+networks:
+  spring-boot-network:
+    name: spring-boot-network
+    driver: bridge

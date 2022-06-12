@@ -1,0 +1,14 @@
+FROM maven:3.8.4-openjdk-11-slim as build
+RUN mkdir msGateway
+WORKDIR /msGateway
+COPY ./ ./
+RUN mvn clean package spring-boot:repackage
+RUN ls
+RUN ls ./target
+
+FROM gcr.io/distroless/java:11
+COPY --from=build /msGateway/target/*.jar /jar-files/msGateway.jar
+WORKDIR /jar-files
+
+EXPOSE 8099
+CMD [ "msGateway.jar" ]
