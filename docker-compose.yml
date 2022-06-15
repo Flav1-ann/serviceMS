@@ -26,8 +26,8 @@ services:
     image: flav1ann/mscompte:lastest
     depends_on:
       - msConfig
-      - msGateway
-      - msRegistery
+#       - msGateway
+#       - msRegistery
     ports:
       - 8083:8083
     restart: always
