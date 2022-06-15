@@ -34,25 +34,25 @@ services:
     networks:
       - spring-boot-network
 
-  msGateway:
-    container_name: msGateway
-    image: flav1ann/msgateway:lastest
-    depends_on:
-      - msConfig
-    ports:
-      - 8099:8099
-    networks:
-      - spring-boot-network
+#   msGateway:
+#     container_name: msGateway
+#     image: flav1ann/msgateway:lastest
+#     depends_on:
+#       - msConfig
+#     ports:
+#       - 8099:8099
+#     networks:
+#       - spring-boot-network
 
-  msRegistery:
-    container_name: msRegistery
-    image: flav1ann/msregistery:lastest
-    depends_on:
-      - msConfig
-    ports:
-      - 8761:8761
-    networks:
-      - spring-boot-network
+#   msRegistery:
+#     container_name: msRegistery
+#     image: flav1ann/msregistery:lastest
+#     depends_on:
+#       - msConfig
+#     ports:
+#       - 8761:8761
+#     networks:
+#       - spring-boot-network
 
 
 
