@@ -14,20 +14,20 @@ services:
 #      - ./db-data:/var/lib/mysql
 #    networks:
 #      - spring-boot-network
-#  msConfig:
-#    container_name: msConfig
-#    image: flav1ann/msconfig:lastest
-#    ports:
-#      - 8888:8888
-#    networks:
-#      - spring-boot-network
+    msConfig:
+      container_name: msConfig
+      image: flav1ann/msconfig:lastest
+      ports:
+        - 8888:8888
+      networks:
+        - spring-boot-network
     msCompte:
       container_name: msCompte
       image: flav1ann/mscompte:lastest
       depends_on:
-  #      - msConfig
-  #       - msGateway
-  #       - msRegistery
+        - msConfig
+         - msGateway
+         - msRegistery
       ports:
         - 8083:8083
       restart: always
