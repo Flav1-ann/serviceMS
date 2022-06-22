@@ -12,6 +12,7 @@ module "ec2" {
 module "sg" {
   source   = "../Modules/SG"
   tag_name = var.author_name
+  vpc_id = aws_default_vpc.main.id
 }
 
 module "eip" {
@@ -22,5 +23,11 @@ module "eip" {
 resource "aws_eip_association" "eip_association" {
   allocation_id = module.eip.out_eip_id
   instance_id   = module.ec2.out-ec2-id
+}
+
+resource "aws_default_vpc" "main" {
+  tags = {
+    Name = "main"
+  }
 }
 

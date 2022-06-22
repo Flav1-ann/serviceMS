@@ -4,7 +4,6 @@ resource "aws_instance" "ec2" {
   security_groups        = ["${var.sg_name}"]
   availability_zone      = var.availability_zone
   key_name               = "${var.author_name}"
-
   tags = {
     Name : "ec2-${var.author_name}"
   }
@@ -48,3 +47,5 @@ data "aws_ami" "ami-ubuntu-bionic" {
     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server*"]
   }
 }
+
+

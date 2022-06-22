@@ -2,6 +2,7 @@
 resource "aws_security_group" "sg" {
   name        = "${var.tag_name}-sg"
   description = "Allow SSH, HTTP and HTTPS inbound traffic"
+  vpc_id = var.vpc_id
 
   # Autorize incoming traffic to port 80
   ingress {
