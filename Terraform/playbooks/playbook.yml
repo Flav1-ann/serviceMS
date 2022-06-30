@@ -70,15 +70,15 @@
       args:
         chdir: '{{ WORKING_DIR }}'
 
-#   tasks:
-#     - name: Copy to remote
-#       copy:
-#         src: ./docker-compose.yml
-#         dest: '{{ WORKING_DIR }}'
-#
-#    - name: run docker-compose
-#      become: true
-#      community.docker.docker_compose:
-#        project_src: '{{ WORKING_DIR }}'
+  #  tasks:
+  #    - name: Copy to remote
+  #      copy:
+  #        src: ./docker-compose.yml
+  #        dest: '{{ WORKING_DIR }}'
+
+  #   - name: run docker-compose
+  #     become: true
+  #     community.docker.docker_compose:
+  #       project_src: '{{ WORKING_DIR }}'
 
 
