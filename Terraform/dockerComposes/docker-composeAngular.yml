@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  angular:
+    container_name: angular
+    image: flav1ann/angular_compte:latest
+    ports:
+      - "83:80"
+    networks:
+      - spring-boot-network
+networks:
+  spring-boot-network:
+    name: spring-boot-network
+    driver: bridge

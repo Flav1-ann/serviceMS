@@ -18,24 +18,24 @@
       become: yes
       loop:
         [
-            "apt-transport-https",
-            "ca-certificates",
-            "curl",
-            "software-properties-common",
-            "python3-pip",
-            "python-apt",
-            "virtualenv",
-            "python-setuptools",
-            "net-tools",
-            "apache2",
+          "apt-transport-https",
+          "ca-certificates",
+          "curl",
+          "software-properties-common",
+          "python3-pip",
+          "python-apt",
+          "virtualenv",
+          "python-setuptools",
+          "net-tools",
+          "apache2",
         ]
 
-    - name: Enable apache2 
+    - name: Enable apache2
       service:
         name: apache2
         enabled: yes
         state: started
-        
+
     - name: Add Docker GPG apt Key
       become: yes
       apt_key:
@@ -59,7 +59,7 @@
 
     - name: Copy to remote
       copy:
-        src: ./docker_usr_config.sh
+        src: ../docker_usr_config.sh
         dest: '{{ WORKING_DIR }}'
         mode: u=rxw,g=rw,o=r
 
@@ -70,15 +70,17 @@
       args:
         chdir: '{{ WORKING_DIR }}'
 
-   tasks:
-     - name: Copy to remote
-       copy:
-         src: ./docker-compose.yml
-         dest: '{{ WORKING_DIR }}'
-
+  tasks:
+    - name: Create target directory
+      file:
+        path: '{{ WORKING_DIRConfig }}'
+        state: directory
+        mode: 0755
+    - name: Copy to remote
+      copy:
+        src: ../dockerComposes/docker-composeConfig.yml
+        dest: '{{ WORKING_DIRConfig }}/docker-compose.yml'
     - name: run docker-compose
       become: true
       community.docker.docker_compose:
-        project_src: '{{ WORKING_DIR }}'
-
-
+        project_src: '{{ WORKING_DIRConfig }}'

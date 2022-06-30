@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+    msRegistery:
+     container_name: msRegistery
+     image: flav1ann/msregistery:v1
+     ports:
+       - 8761:8761
+     networks:
+       - spring-boot-network
+networks:
+  spring-boot-network:
+    name: spring-boot-network
+    driver: bridge

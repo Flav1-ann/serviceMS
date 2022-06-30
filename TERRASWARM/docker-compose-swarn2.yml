@@ -1,0 +1,82 @@
+version: '3.9'
+services:
+  test:
+    image: thomaslpro/test-service
+    depends_on:
+      - registration
+    command: sh -c "/wait && java -server -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -jar test.jar"
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8081:8081
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registration:8761/eureka
+      - WAIT_HOSTS=my_app_registration:8761
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+      - eureka.instance.preferIpAddress=true
+    networks:
+      - app-network
+  configuration:
+    image: thomaslpro/config-service
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8888:8888
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - app-network
+  gateway:
+    image: thomaslpro/gateway-service
+    depends_on:
+      - registration
+    command: sh -c "/wait && java -server -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -jar gateway.jar"
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 9999:9999
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registration:8761/eureka
+      - WAIT_HOSTS=my_app_registration:8761
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+      - eureka.instance.preferIpAddress=true
+    networks:
+      - app-network
+  registration:
+    image: thomaslpro/registration-service
+    depends_on:
+      - configuration
+    command: sh -c "/wait && java -server -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -jar registration.jar"
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8761:8761
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registration:8761/eureka
+      - WAIT_HOSTS=my_app_configuration:8888
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    networks:
+      - app-network
+networks:
+  app-network:
+    name: app-network
+    driver: overlay
+    internal: true
+    attachable: true

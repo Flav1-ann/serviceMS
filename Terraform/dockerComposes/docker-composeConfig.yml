@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  msConfig:
+    container_name: msConfig
+    image: flav1ann/msconfig:v1
+    ports:
+      - 8888:8888
+    networks:
+      - spring-boot-network
+networks:
+  spring-boot-network:
+    name: spring-boot-network
+    driver: bridge

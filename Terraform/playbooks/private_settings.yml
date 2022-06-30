@@ -1,0 +1,7 @@
+MYSQL_PASSWORD: spring
+WORKING_DIR: /home/ubuntu/project/
+WORKING_DIRCompte: /home/ubuntu/project/Compte/
+WORKING_DIRConfig: /home/ubuntu/project/Config/
+WORKING_DIRRegistry: /home/ubuntu/project/Registry/
+WORKING_DIRGateway: /home/ubuntu/project/Gateway/
+WORKING_DIRAngular: /home/ubuntu/project/Angular/

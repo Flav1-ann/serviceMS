@@ -3,12 +3,15 @@ RUN mkdir msGateway
 WORKDIR /msGateway
 COPY ./ ./
 RUN mvn clean package spring-boot:repackage
-RUN ls
-RUN ls ./target
 
-FROM gcr.io/distroless/java:11
+
+FROM adoptopenjdk/openjdk11:alpine-jre
 COPY --from=build /msGateway/target/*.jar /jar-files/msGateway.jar
 WORKDIR /jar-files
 
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
 EXPOSE 8099
-CMD [ "msGateway.jar" ]
+CMD ["java", "-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseContainerSupport", "-jar", "msGateway.jar"]

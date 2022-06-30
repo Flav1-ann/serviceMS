@@ -1,0 +1,109 @@
+version: '3.9'
+services:
+  compte:
+    image: flav1ann/mscompte:v1
+    hostname: compte
+    depends_on:
+      - registration
+      - docker-mysql
+    command: sh -c "/wait && java -server -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -jar msCompte.jar"
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8083:8083
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registration:8761/eureka
+      - WAIT_HOSTS=registration:8761
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    networks:
+      - app-network
+  configuration:
+    image: flav1ann/msconfig:v1
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8888:8888
+    networks:
+      - app-network
+  gateway:
+    image: flav1ann/msgateway:v1
+    hostname: gateway
+    depends_on:
+      - registration
+    command: sh -c "/wait && java -server -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -jar msGateway.jar"
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8099:8099
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registration:8761/eureka
+      - WAIT_HOSTS=registration:8761
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    networks:
+      - app-network
+  registration:
+    image: flav1ann/msregistery:v1
+    depends_on:
+      - configuration
+    command: sh -c "/wait && java -server -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -jar MsRegistry.jar"
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 8761:8761
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://registration:8761/eureka
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    networks:
+      - app-network
+  angular:
+    image: flav1ann/angular_compte:latest
+    depends_on:
+      - registration
+    command: sh -c "/wait && nginx -g 'daemon off;'"
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    ports:
+      - 83:80
+    environment:
+      - WAIT_HOSTS=compte:8083
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    networks:
+      - app-network
+  docker-mysql:
+    image: mysql:8.0
+    container_name: docker-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myresto
+      MYSQL_USER: spring
+      MYSQL_PASSWORD: spring
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+networks:
+  app-network:
+    name: app-network
+    driver: overlay
+    internal: true
+    attachable: true

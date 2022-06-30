@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  msGateway:
+    container_name: msGateway
+    image: flav1ann/msgateway:v1
+    ports:
+      - 8099:8099
+    networks:
+      - spring-boot-network
+networks:
+  spring-boot-network:
+    name: spring-boot-network
+    driver: bridge

@@ -1,0 +1,12 @@
+/**/.terraform/
+/**/target/
+/**/.idea
+/TERRASWARM/ansible/swarm-inventory
+/**/ssh_key.perm
+/**/*.tfstate.backup
+/**/*.tfstate
+/**/*.pem
+/**/*.ini
+/Terraform/ip.host
+/Terraform/app/private_data.txt
+/Terraform/app/.terraform.lock.hcl

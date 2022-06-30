@@ -1,6 +1,6 @@
 secret_path         = "../secret.ini"
-region              = "us-east-1"
+region              = "us-east-2"
 private_key_path    = "../ssh_key.pem"
-ec2_avail_zone      = "us-east-1"
+ec2_avail_zone      = "us-east-2b"
 author_name         = "flavien"
 main_dir            = "../"

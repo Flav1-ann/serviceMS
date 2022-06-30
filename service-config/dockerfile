@@ -6,9 +6,12 @@ RUN mvn clean package spring-boot:repackage
 RUN ls
 RUN ls ./target
 
-FROM gcr.io/distroless/java:11
+FROM adoptopenjdk/openjdk11:alpine-jre
 COPY --from=build /msConfig/target/*.jar /jar-files/msConfig.jar
 WORKDIR /jar-files
 
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
 EXPOSE 8888
-CMD [ "msConfig.jar" ]
+CMD ["java", "-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseContainerSupport", "-jar", "msConfig.jar"]
