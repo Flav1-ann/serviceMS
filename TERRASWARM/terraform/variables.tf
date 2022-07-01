@@ -3,10 +3,10 @@ variable "ssh_user" {
   default = "ubuntu"
 }
 variable "public_key_path" {
-  default = "/home/flavien/.ssh/id_rsa.pub"
+  default = "./id_rsa.pub"
 }
 variable "private_key_path" {
-  default = "/home/flavien/.ssh/id_rsa"
+  default = "./id_rsa"
 }
 
 ##AWS Specific Vars
