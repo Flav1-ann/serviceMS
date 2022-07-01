@@ -1,6 +1,8 @@
 ##Amazon Infrastructure
 provider "aws" {
   region = "${var.aws_region}"
+  shared_credentials_files 	= ["./secret.ini"]
+
 }
 
 ##Create swarm security group
