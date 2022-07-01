@@ -10,7 +10,7 @@ resource "null_resource" "ansible-provision" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"[swarm-master]\" > ../ansible/swarm-inventory"
+    command = "echo \"[swarm-master]\" > ../Ansible/swarm-inventory"
   }
 
   provisioner "local-exec" {
