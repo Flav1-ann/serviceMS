@@ -10,3 +10,6 @@
 /Terraform/ip.host
 /Terraform/app/private_data.txt
 /Terraform/app/.terraform.lock.hcl
+!/Terraform/
+
+!/TERRASWARM/
